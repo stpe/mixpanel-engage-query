@@ -41,7 +41,7 @@ var argv = require('optimist')
     .argv;
 
 // get properties to output
-var properties = typeof argv.properties == "string" ? argv.properties.split(" ") : [];
+var properties = typeof argv.properties === "string" ? argv.properties.split(" ") : [];
 
 // do the stuff!
 queryEngageApi({
@@ -101,7 +101,7 @@ function processResults(data) {
 
         // output object unless empty
         if (Object.keys(entry).length) {
-            if (argv.format == "csv") {
+            if (argv.format === "csv") {
                 csv = [];
                 Object.keys(entry).forEach(function(k) {
                     csv.push(entry[k]);
