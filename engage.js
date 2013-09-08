@@ -1,4 +1,7 @@
+#!/usr/bin/env node
+
 /*jshint node: true */
+
 "use strict";
 
 var needle      = require('needle'),
