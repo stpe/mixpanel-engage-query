@@ -1,10 +1,10 @@
-Command-line tool to query the MixPanel Engage API (https://mixpanel.com/docs/api-documentation/data-export-api#engage-default) for People Data.
+Command-line tool to query the [MixPanel Engage API](https://mixpanel.com/docs/api-documentation/data-export-api#engage-default) for People Data.
 
 This was quickly put together for use of my own. But feel free to fork, submit pull requests or use if you find it useful.
 
 ## Installation
 
-Clone repo, make sure you've got Node.js installed, run ``npm install`` in the directory. That's it!
+Clone repo, make sure you've got [Node.js](http://nodejs.org/) installed, run ``npm install`` in the directory. That's it!
 
 ## Example
 
@@ -56,8 +56,7 @@ Note: currently no special escaping or similar is implemented, so depending on v
 
 #### Query using expression
 
-This example returns people with $last_seen timestamp greater (later) than 29th of August. See MixPanel documentation for segmentation expressions:
-https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions
+This example returns people with $last_seen timestamp greater (later) than 29th of August (see the MixPanel documentation for [segmentation expressions](https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions)).
 
 ``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -q 'properties["$last_seen"] > "2013-08-29T23:00:00"'``
 
