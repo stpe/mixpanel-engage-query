@@ -4,7 +4,12 @@ This was quickly put together for use of my own. But feel free to fork, submit p
 
 ## Installation
 
-Clone repo, make sure you've got [Node.js](http://nodejs.org/) installed, run ``npm install`` in the directory. That's it!
+Clone the repository:
+``git clone git@github.com:stpe/mixpanel-engage-query.git``
+
+Install [Node.js](http://nodejs.org/).
+
+Run ``npm install`` in the directory. That's it!
 
 ## Example
 
