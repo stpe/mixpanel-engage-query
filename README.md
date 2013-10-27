@@ -5,7 +5,7 @@ This was quickly put together for use of my own. But feel free to fork, submit p
 ## Installation
 
 Clone the repository:
-``git clone git@github.com:stpe/mixpanel-engage-query.git``
+``git clone https://github.com/stpe/mixpanel-engage-query.git``
 
 Install [Node.js](http://nodejs.org/).
 
