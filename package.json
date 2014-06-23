@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "cli-color": "~0.2.3",
+    "cli-color": "~0.3.2",
     "crypto": "~0.0.3",
-    "needle": "~0.7.0",
+    "needle": "~0.7.2",
     "optimist": "~0.6.1"
   }
 }
