@@ -17,7 +17,7 @@ var needle      = require('needle'),
 // options
 var argv = require('optimist')
     .usage('Usage: $0 -k [string] -s [string]')
-    .demand(['k','s'])
+    .demand(['k', 's'])
     .options('k', {
         alias: 'key',
         describe: 'MixPanel API key'
@@ -41,10 +41,17 @@ var argv = require('optimist')
         alias: 'properties',
         describe: "Properties to output (e.g. '$email $first_name'). Outputs all properties if none specified."
     })
+    .options('r', {
+        alias: 'required',
+        describe: "Skip entries where the required properties are not set (e.g. '$email $first_name')."
+    })
     .argv;
 
 // get properties to output
 var properties = typeof argv.properties === "string" ? argv.properties.split(" ") : [];
+
+// get required properties
+var required = typeof argv.required === "string" ? argv.required.split(" ") : [];
 
 // do the stuff!
 queryEngageApi({
@@ -86,7 +93,17 @@ function queryEngageApi(params) {
 
 function processResults(data) {
     var i, csv, entry, len = data.results.length;
+
     for (i = 0; i < len; i++) {
+        if (required.length > 0) {
+            // skip if not required properties present
+            if (!required.every(function(r) {
+                return typeof data.results[i].$properties[r] !== 'undefined';
+            })) {
+                continue;
+            }
+        }
+
         entry = {};
         if (properties.length === 0) {
             // output all
@@ -94,25 +111,25 @@ function processResults(data) {
         } else {
             // only include given properties
             properties.forEach(function(p) {
-                if (data.results[i].$properties[p]) {
-                    entry[p] = data.results[i].$properties[p];
-                } else {
-                    entry[p] = '';
-                }
+                entry[p] = data.results[i].$properties[p] || '';
             });
         }
 
-        // output object unless empty
-        if (Object.keys(entry).length) {
-            if (argv.format === "csv") {
-                csv = [];
-                Object.keys(entry).forEach(function(k) {
-                    csv.push(entry[k]);
-                });
-                console.log(csv.join(";"));
-            } else {
-                console.log(entry);
-            }
+        // skip if object is empty
+        if (Object.keys(entry).length === 0) {
+            continue;
+        }
+
+        if (argv.format === "csv") {
+            // csv
+            csv = [];
+            Object.keys(entry).forEach(function(k) {
+                csv.push(entry[k]);
+            });
+            console.log(csv.join(";"));
+        } else {
+            // json
+            console.log(JSON.stringify(entry) + ",");
         }
     }
 }

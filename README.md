@@ -25,6 +25,7 @@ Options:
   -q, --query       A segmentation expression
   -f, --format      Output format, json or csv                                        [default: "json"]
   -p, --properties  Properties to output. Outputs all properties if none specified.
+  -r, --required    Skip entries where the required properties are not set (e.g. '$email $first_name').
 
 Missing required arguments: k, s
 ```
