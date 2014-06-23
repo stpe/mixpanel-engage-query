@@ -129,7 +129,7 @@ function processResults(data) {
             console.log(csv.join(";"));
         } else {
             // json
-            console.log(JSON.stringify(entry) + ",");
+            console.log(entry);
         }
     }
 }
