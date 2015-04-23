@@ -25,13 +25,13 @@ var yargs = require('yargs')
     .usage('Usage: $0 -k [string] -s [string]')
     .options('k', {
         alias: 'key',
-        describe: 'MixPanel API key',
+        describe: 'Mixpanel API key',
         nargs: 1,
         type: 'string'
     })
     .options('s', {
         alias: 'secret',
-        describe: 'MixPanel API secret',
+        describe: 'Mixpanel API secret',
         nargs: 1,
         type: 'string'
     })
@@ -39,7 +39,7 @@ var yargs = require('yargs')
         alias: 'query',
         // https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions
         // example: 'properties["$last_seen"] > "2013-08-29T23:00:00"'
-        describe: 'A segmentation expression (see MixPanel API doc)',
+        describe: 'A segmentation expression (see Mixpanel API doc)',
         type: 'string'
     })
     .example("$0 -q 'properties[\"$last_seen\"] > \"2015-04-24T23:00:00\"'", 'Query using expression')
@@ -101,9 +101,9 @@ function queryEngageApi(params) {
             return;
         }
 
-        // MixPanel API error
+        // Mixpanel API error
         if (data.error) {
-            console.log('MixPanel API error: ' + data.error);
+            console.log('Mixpanel API error: ' + data.error);
             return;
         }
 

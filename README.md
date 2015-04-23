@@ -1,6 +1,4 @@
-Command-line tool to query the [MixPanel Engage API](https://mixpanel.com/docs/api-documentation/data-export-api#engage-default) for People Data.
-
-This was quickly put together for use of my own. But feel free to fork, submit pull requests or use if you find it useful.
+Command-line tool to query the [Mixpanel Engage API](https://mixpanel.com/docs/api-documentation/data-export-api#engage-default) for People Data. With other words, export list of Mixpanel users with selected properties, optionally filtered by query on property values.
 
 ## Installation
 
@@ -20,17 +18,18 @@ $ node engage.js
 Usage: node ./engage.js -k [string] -s [string]
 
 Options:
-  -k, --key         MixPanel API key                                                  [required]
-  -s, --secret      MixPanel API secret                                               [required]
+  -k, --key         Mixpanel API key                                                  [required]
+  -s, --secret      Mixpanel API secret                                               [required]
   -q, --query       A segmentation expression
   -f, --format      Output format, json or csv                                        [default: "json"]
   -p, --properties  Properties to output. Outputs all properties if none specified.
   -r, --required    Skip entries where the required properties are not set (e.g. '$email $first_name').
+  -h, --help
 
 Missing required arguments: k, s
 ```
 
-Note that the MixPanel API key and secret may also be set using environment variables `MIXPANEL_API_KEY` and `MIXPANEL_API_SECRET` or in a [.env](https://github.com/motdotla/dotenv) file.
+Note that the Mixpanel API key and secret may also be set using environment variables `MIXPANEL_API_KEY` and `MIXPANEL_API_SECRET` or in a [.env](https://github.com/motdotla/dotenv) file.
 
 #### Get everything
 
@@ -64,7 +63,7 @@ Note: currently no special escaping or similar is implemented, so depending on v
 
 #### Query using expression
 
-This example returns people with $last_seen timestamp greater (later) than 24th of April (see the MixPanel documentation for [segmentation expressions](https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions)).
+This example returns people with $last_seen timestamp greater (later) than 24th of April (see the Mixpanel documentation for [segmentation expressions](https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions)).
 
 ``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -q 'properties["$last_seen"] > "2015-04-24T23:00:00"'``
 
