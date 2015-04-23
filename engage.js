@@ -6,6 +6,7 @@
 
 var needle      = require('needle'),
     crypto      = require('crypto'),
+    fs          = require('fs'),
 
     // mixpanel
     base_url    = "http://mixpanel.com/api/2.0/",
@@ -14,10 +15,14 @@ var needle      = require('needle'),
     // response should return page_size, but it doesn't, so we assume it is 1000 for now
     page_size = 1000;
 
+// add environment variables from .env if present
+if (fs.existsSync('.env')) {
+    require('dotenv').load();
+}
+
 // options
 var argv = require('optimist')
     .usage('Usage: $0 -k [string] -s [string]')
-    .demand(['k', 's'])
     .options('k', {
         alias: 'key',
         describe: 'MixPanel API key'
@@ -44,13 +49,26 @@ var argv = require('optimist')
     .options('r', {
         alias: 'required',
         describe: "Skip entries where the required properties are not set (e.g. '$email $first_name')."
-    })
-    .argv;
+    });
 
-// get properties to output
+
+if (!process.env.MIXPANEL_API_KEY) {
+    argv.demand(['k']);
+}
+
+if (!process.env.MIXPANEL_API_SECRET) {
+    argv.demand(['s']);
+}
+
+argv.argv;
+
+var MIXPANEL_API_KEY = process.env.MIXPANEL_API_KEY || argv.key;
+var MIXPANEL_API_SECRET = process.env.MIXPANEL_API_SECRET || argv.secret;
+
+// get mp properties to output
 var properties = typeof argv.properties === "string" ? argv.properties.split(" ") : [];
 
-// get required properties
+// get required mp properties
 var required = typeof argv.required === "string" ? argv.required.split(" ") : [];
 
 // do the stuff!
@@ -83,7 +101,7 @@ function queryEngageApi(params) {
         if (data.results.length >= page_size) {
             // get next page
             params.page++;
-            // use session id in next query to speed up api response
+            // use session id in next query to speed up API response
             params.session_id = data.session_id;
 
             queryEngageApi(params);
@@ -136,7 +154,7 @@ function processResults(data) {
 
 function getUrl(endpoint, args) {
     // add api_key and 60 sec expire
-    args.api_key = argv.key;
+    args.api_key = MIXPANEL_API_KEY;
     args.expire = Math.round(Date.now() / 1000) + 60;
 
     // see https://mixpanel.com/docs/api-documentation/data-export-api#auth-implementation
@@ -151,7 +169,7 @@ function getUrl(endpoint, args) {
     }
 
     // sign
-    var sig = crypto.createHash('md5').update(concat_keys + argv.secret).digest("hex");
+    var sig = crypto.createHash('md5').update(concat_keys + MIXPANEL_API_SECRET).digest("hex");
 
     // return request url
     return base_url + endpoint + "/?" + params.join("&") + "&sig=" + sig;

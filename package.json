@@ -3,9 +3,13 @@
   "description": "",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "start": "node engage.js"
+  },
   "dependencies": {
     "cli-color": "~0.3.2",
     "crypto": "~0.0.3",
+    "dotenv": "^1.1.0",
     "needle": "~0.7.2",
     "optimist": "~0.6.1"
   }

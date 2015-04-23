@@ -30,6 +30,8 @@ Options:
 Missing required arguments: k, s
 ```
 
+Note that the MixPanel API key and secret may also be set using environment variables `MIXPANEL_API_KEY` and `MIXPANEL_API_SECRET` or in a [.env](https://github.com/motdotla/dotenv) file.
+
 #### Get everything
 
 ``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET``
