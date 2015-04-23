@@ -64,7 +64,7 @@ Note: currently no special escaping or similar is implemented, so depending on v
 
 #### Query using expression
 
-This example returns people with $last_seen timestamp greater (later) than 29th of August (see the MixPanel documentation for [segmentation expressions](https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions)).
+This example returns people with $last_seen timestamp greater (later) than 24th of April (see the MixPanel documentation for [segmentation expressions](https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions)).
 
-``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -q 'properties["$last_seen"] > "2013-08-29T23:00:00"'``
+``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -q 'properties["$last_seen"] > "2015-04-24T23:00:00"'``
 

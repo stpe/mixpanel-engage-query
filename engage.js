@@ -21,46 +21,58 @@ if (fs.existsSync('.env')) {
 }
 
 // options
-var argv = require('optimist')
+var yargs = require('yargs')
     .usage('Usage: $0 -k [string] -s [string]')
     .options('k', {
         alias: 'key',
-        describe: 'MixPanel API key'
+        describe: 'MixPanel API key',
+        nargs: 1,
+        type: 'string'
     })
     .options('s', {
         alias: 'secret',
-        describe: 'MixPanel API secret'
+        describe: 'MixPanel API secret',
+        nargs: 1,
+        type: 'string'
     })
     .options('q', {
         alias: 'query',
         // https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions
         // example: 'properties["$last_seen"] > "2013-08-29T23:00:00"'
-        describe: 'A segmentation expression (see MixPanel API doc)'
+        describe: 'A segmentation expression (see MixPanel API doc)',
+        type: 'string'
     })
+    .example("$0 -q 'properties[\"$last_seen\"] > \"2015-04-24T23:00:00\"'", 'Query using expression')
     .options('f', {
         alias: 'format',
         default: 'json',
-        describe: 'Output format, json or csv'
+        describe: 'Output format, json or csv',
+        type: 'string'
     })
     .options('p', {
         alias: 'properties',
         describe: "Properties to output (e.g. '$email $first_name'). Outputs all properties if none specified."
     })
+    .example("$0 -p '$email $first_name'", 'Limit output to only given list of space delimited properties')
     .options('r', {
         alias: 'required',
         describe: "Skip entries where the required properties are not set (e.g. '$email $first_name')."
+    })
+    .help('h')
+    .options('h', {
+        alias: 'help',
+        describe: 'Help'
     });
 
-
 if (!process.env.MIXPANEL_API_KEY) {
-    argv.demand(['k']);
+    yargs.demand(['k']);
 }
 
 if (!process.env.MIXPANEL_API_SECRET) {
-    argv.demand(['s']);
+    yargs.demand(['s']);
 }
 
-argv.argv;
+var argv = yargs.argv;
 
 var MIXPANEL_API_KEY = process.env.MIXPANEL_API_KEY || argv.key;
 var MIXPANEL_API_SECRET = process.env.MIXPANEL_API_SECRET || argv.secret;
