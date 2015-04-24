@@ -134,6 +134,11 @@ function processResults(data) {
             }
         }
 
+        // include $distinct_id in property list for convenience
+        if (data.results[i].$distinct_id) {
+            data.results[i].$properties['$distinct_id'] = data.results[i].$distinct_id;
+        }
+
         entry = {};
         if (properties.length === 0) {
             // output all

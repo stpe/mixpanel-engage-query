@@ -35,6 +35,25 @@ Note that the Mixpanel API key and secret may also be set using environment vari
 
 ``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET``
 
+Example output:
+```
+{
+    "$browser": "Chrome",
+    "$city": "Kathmandu",
+    "$country_code": "NP",
+    "$initial_referrer": "$direct",
+    "$initial_referring_domain": "$direct",
+    "$os": "Windows",
+    "$timezone": "Asia/Katmandu",
+    "id": "279267",
+    "nickname": "bamigasectorone",
+    "$last_seen": "2015-04-15T13:07:30",
+    "$distinct_id": "15b9cba739b75-03c7e24a3-459c0418-101270-13d9bfa739ca6"
+}
+```
+
+Note that `$distinct_id` is included as a property for convenience.
+
 #### Only output specific fields
 
 ``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -p '$email $first_name'``
