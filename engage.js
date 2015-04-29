@@ -9,11 +9,7 @@ var needle      = require('needle'),
     fs          = require('fs'),
 
     // mixpanel
-    base_url    = "http://mixpanel.com/api/2.0/",
-
-    // according to mixpanel doc https://mixpanel.com/docs/api-documentation/data-export-api#engage-default
-    // response should return page_size, but it doesn't, so we assume it is 1000 for now
-    page_size = 1000;
+    base_url    = "http://mixpanel.com/api/2.0/";
 
 // add environment variables from .env if present
 if (fs.existsSync('.env')) {
@@ -83,9 +79,10 @@ var properties = typeof argv.properties === "string" ? argv.properties.split(" "
 // get required mp properties
 var required = typeof argv.required === "string" ? argv.required.split(" ") : [];
 
+var page_size;
+
 // do the stuff!
 queryEngageApi({
-    page: 0,
     where: argv.query || ""
 });
 
@@ -109,10 +106,19 @@ function queryEngageApi(params) {
 
         processResults(data);
 
+        // note: properties page_size and total are only returned if no page parameter
+        // is set in the request (not even page=0). Hence they are only available
+        // in the first response.
+
+        // get page_size in first response (should be 1000)
+        if (!page_size) {
+            page_size = data.page_size;
+        }
+
         // unless fewer results than page_size, keep querying for additional pages
         if (data.results.length >= page_size) {
             // get next page
-            params.page++;
+            params.page = data.page++;
             // use session id in next query to speed up API response
             params.session_id = data.session_id;
 
