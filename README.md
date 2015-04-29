@@ -7,7 +7,9 @@ Clone the repository:
 
 Install [Node.js](http://nodejs.org/).
 
-Run ``npm install`` in the directory. That's it!
+Type ``npm install`` in the directory. That's it!
+
+Run using `node engage.js` or make it an executable script by doing `chmod +x engage.js`, then run it simply using `./engage.js`.
 
 ## Example
 
@@ -15,16 +17,27 @@ Run ``npm install`` in the directory. That's it!
 
 ```
 $ node engage.js
-Usage: node ./engage.js -k [string] -s [string]
+
+Usage: engage.js -k [string] -s [string]
 
 Options:
-  -k, --key         Mixpanel API key                                                  [required]
-  -s, --secret      Mixpanel API secret                                               [required]
-  -q, --query       A segmentation expression
-  -f, --format      Output format, json or csv                                        [default: "json"]
-  -p, --properties  Properties to output. Outputs all properties if none specified.
-  -r, --required    Skip entries where the required properties are not set (e.g. '$email $first_name').
-  -h, --help
+  -k, --key         Mixpanel API key                                    [string]
+  -s, --secret      Mixpanel API secret                                 [string]
+  -f, --format      Output format, json or csv       [string]  [default: "json"]
+  -t, --total       Only return total count of results
+  -q, --query       A segmentation expression (see Mixpanel API doc)    [string]
+  -p, --properties  Properties to output (e.g. '$email $first_name'). Outputs
+                    all properties if none specified.
+  -r, --required    Skip entries where the required properties are not set
+                    (e.g. '$email $first_name').
+  -h, --help        Help
+
+Examples:
+  engage.js -q                                Query using expression
+  'properties["$last_seen"] >
+  "2015-04-24T23:00:00"'
+  engage.js -p '$email $first_name'           Limit output to only given list
+                                              of space delimited properties
 
 Missing required arguments: k, s
 ```
@@ -53,6 +66,15 @@ Example output:
 ```
 
 Note that `$distinct_id` is included as a property for convenience.
+
+#### Get just the number of results
+
+``node engage.js -t`` (assumes Mixpanel key/secret set as environment variables)
+
+Example output:
+```
+1138
+```
 
 #### Only output specific fields
 
