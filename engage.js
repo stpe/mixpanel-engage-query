@@ -170,9 +170,10 @@ function processResults(data) {
 }
 
 function getUrl(endpoint, args) {
-    // add api_key and 60 sec expire
+    // add api_key and expire in EXPIRE_IN_MINUTES
+    var EXPIRE_IN_MINUTES = 10;
     args.api_key = MIXPANEL_API_KEY;
-    args.expire = Math.round(Date.now() / 1000) + 60;
+    args.expire = Math.round(Date.now() / 1000) + 60 * EXPIRE_IN_MINUTES;
 
     // see https://mixpanel.com/docs/api-documentation/data-export-api#auth-implementation
     var arg_keys = Object.keys(args),
