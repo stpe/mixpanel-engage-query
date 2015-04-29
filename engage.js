@@ -31,6 +31,16 @@ var yargs = require('yargs')
         nargs: 1,
         type: 'string'
     })
+    .options('f', {
+        alias: 'format',
+        default: 'json',
+        describe: 'Output format, json or csv',
+        type: 'string'
+    })
+    .options('t', {
+        alias: 'total',
+        describe: 'Only return total count of results'
+    })
     .options('q', {
         alias: 'query',
         // https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions
@@ -39,12 +49,6 @@ var yargs = require('yargs')
         type: 'string'
     })
     .example("$0 -q 'properties[\"$last_seen\"] > \"2015-04-24T23:00:00\"'", 'Query using expression')
-    .options('f', {
-        alias: 'format',
-        default: 'json',
-        describe: 'Output format, json or csv',
-        type: 'string'
-    })
     .options('p', {
         alias: 'properties',
         describe: "Properties to output (e.g. '$email $first_name'). Outputs all properties if none specified."
@@ -104,6 +108,12 @@ function queryEngageApi(params) {
             return;
         }
 
+        // return total count
+        if (argv.total) {
+            console.log(data.total);
+            return;
+        }
+
         processResults(data);
 
         // note: properties page_size and total are only returned if no page parameter
@@ -128,7 +138,7 @@ function queryEngageApi(params) {
 }
 
 function processResults(data) {
-    var i, csv, entry, len = data.results.length;
+    var i, csv, entry, len = data.results.length, output;
 
     for (i = 0; i < len; i++) {
         if (required.length > 0) {
@@ -167,11 +177,13 @@ function processResults(data) {
             Object.keys(entry).forEach(function(k) {
                 csv.push(entry[k]);
             });
-            console.log(csv.join(";"));
+            output = csv.join(";");
         } else {
             // json
-            console.log(JSON.stringify(entry));
+            output = JSON.stringify(entry);
         }
+
+        console.log(output);
     }
 }
 
