@@ -59,6 +59,10 @@ var yargs = require('yargs')
         alias: 'required',
         describe: "Skip entries where the required properties are not set (e.g. '$email $first_name')."
     })
+    .options('u', {
+        alias: 'url',
+        describe: "Only return the URL of query without making the actual request."
+    })
     .help('h')
     .options('h', {
         alias: 'help',
@@ -96,6 +100,10 @@ queryEngageApi({
 
 function queryEngageApi(params) {
     var url = getUrl("engage", params);
+    if (argv.url) {
+        console.log(url);
+        exit(0);
+    }
 
     needle.get(url, {}, function(err, resp, data) {
         // request error
