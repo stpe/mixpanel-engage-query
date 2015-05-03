@@ -1,5 +1,7 @@
 Command-line tool to query the [Mixpanel Engage API](https://mixpanel.com/docs/api-documentation/data-export-api#engage-default) for People Data. With other words, export list of Mixpanel users with selected properties, optionally filtered by query on property values.
 
+This script is especially powerful in combination with [mixpanel-engage-post](https://github.com/stpe/mixpanel-engage-post) that allow you to batch post additions/updates/deletion of people profiles.
+
 ## Installation
 
 Clone the repository:
