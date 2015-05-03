@@ -1,17 +1,21 @@
 Command-line tool to query the [Mixpanel Engage API](https://mixpanel.com/docs/api-documentation/data-export-api#engage-default) for People Data. With other words, export list of Mixpanel users with selected properties, optionally filtered by query on property values.
 
-This script is especially powerful in combination with [mixpanel-engage-post](https://github.com/stpe/mixpanel-engage-post) that allow you to batch post additions/updates/deletion of people profiles.
+This script is especially powerful in combination with [mixpanel-engage-post](https://github.com/stpe/mixpanel-engage-post), that allow you to batch post additions/updates/deletion of people profiles, and [jq](http://stedolan.github.io/jq) (a command-line JSON processor).
 
 ## Installation
 
 Clone the repository:
-``git clone https://github.com/stpe/mixpanel-engage-query.git``
+`git clone https://github.com/stpe/mixpanel-engage-query.git`
 
 Install [Node.js](http://nodejs.org/).
 
-Type ``npm install`` in the directory. That's it!
+Type `npm install` in the directory. That's it!
 
 Run using `node engage.js` or make it an executable script by doing `chmod +x engage.js`, then run it simply using `./engage.js`.
+
+## Usage
+
+To run the script you must specify your Mixpanel API key and secret either as parameters, as environment variables `MIXPANEL_API_KEY` and `MIXPANEL_API_SECRET` or in a [.env](https://github.com/motdotla/dotenv) file.
 
 ## Example
 
@@ -41,11 +45,9 @@ Options:
 Missing required arguments: k, s
 ```
 
-Note that the Mixpanel API key and secret may also be set using environment variables `MIXPANEL_API_KEY` and `MIXPANEL_API_SECRET` or in a [.env](https://github.com/motdotla/dotenv) file.
-
 #### Get everything
 
-``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET``
+`node engage.js`
 
 Example output:
 ```
@@ -72,7 +74,7 @@ Note that `$distinct_id` is included as a property for convenience.
 
 #### Get just the number of results
 
-``node engage.js -t`` (assumes Mixpanel key/secret set as environment variables)
+`node engage.js -t` (assumes Mixpanel key/secret set as environment variables)
 
 Example output:
 ```
@@ -81,7 +83,7 @@ Example output:
 
 #### Only output specific fields
 
-``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -p '$email $first_name'``
+`node engage.js -p '$email $first_name'`
 
 Example output:
 ```
@@ -94,7 +96,7 @@ Example output:
 
 #### Output as CVS instead of JSON
 
-``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -f 'csv'``
+`node engage.js -f csv`
 
 Example output:
 ```
@@ -109,5 +111,5 @@ Note: currently no special escaping or similar is implemented, so depending on v
 
 This example returns people with $last_seen timestamp greater (later) than 24th of April (see the Mixpanel documentation for [segmentation expressions](https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions)).
 
-``node engage.js -k MIXPANEL_API_KEY -s MIXPANEL_API_SECRET -q 'properties["$last_seen"] > "2015-04-24T23:00:00"'``
+`node engage.js -q 'properties["$last_seen"] > "2015-04-24T23:00:00"'`
 
