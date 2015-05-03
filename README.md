@@ -30,14 +30,11 @@ Options:
                     all properties if none specified.
   -r, --required    Skip entries where the required properties are not set
                     (e.g. '$email $first_name').
+  --na, --noarray   Output json as one entry per row, instead of an array of
+                    entries.
+  -u, --url         Only return the URL of query without making the actual
+                    request.
   -h, --help        Help
-
-Examples:
-  engage.js -q                                Query using expression
-  'properties["$last_seen"] >
-  "2015-04-24T23:00:00"'
-  engage.js -p '$email $first_name'           Limit output to only given list
-                                              of space delimited properties
 
 Missing required arguments: k, s
 ```
@@ -50,20 +47,24 @@ Note that the Mixpanel API key and secret may also be set using environment vari
 
 Example output:
 ```
-{
-    "$browser": "Chrome",
-    "$city": "Kathmandu",
-    "$country_code": "NP",
-    "$initial_referrer": "$direct",
-    "$initial_referring_domain": "$direct",
-    "$os": "Windows",
-    "$timezone": "Asia/Katmandu",
-    "id": "279267",
-    "nickname": "bamigasectorone",
-    "$last_seen": "2015-04-15T13:07:30",
-    "$distinct_id": "15b9cba739b75-03c7e24a3-459c0418-101270-13d9bfa739ca6"
-}
+[
+  {
+      "$browser": "Chrome",
+      "$city": "Kathmandu",
+      "$country_code": "NP",
+      "$initial_referrer": "$direct",
+      "$initial_referring_domain": "$direct",
+      "$os": "Windows",
+      "$timezone": "Asia/Katmandu",
+      "id": "279267",
+      "nickname": "bamigasectorone",
+      "$last_seen": "2015-04-15T13:07:30",
+      "$distinct_id": "15b9cba739b75-03c7e24a3-459c0418-101270-13d9bfa739ca6"
+  }
+]
 ```
+
+Default behaviour is to output the result as an array of entries. Using the `noarray` flag will instead output one entry per row.
 
 Note that `$distinct_id` is included as a property for convenience.
 
@@ -82,12 +83,12 @@ Example output:
 
 Example output:
 ```
-{ '$email': 'jocke@bigcompany.se', '$first_name': 'Joakim' }
-{ '$email': 'henrik@gmail.com', '$first_name': 'Henrik' }
-{ '$email': 'theguy@gmail.com', '$first_name': 'Jonas' }
+[
+  { '$email': 'jocke@bigcompany.se', '$first_name': 'Joakim' },
+  { '$email': 'henrik@gmail.com', '$first_name': 'Henrik' },
+  { '$email': 'theguy@gmail.com', '$first_name': 'Jonas' }
+]
 ```
-
-Note: one JSON entry per row.
 
 #### Output as CVS instead of JSON
 

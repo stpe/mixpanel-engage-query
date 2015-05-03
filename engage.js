@@ -59,6 +59,10 @@ var yargs = require('yargs')
         alias: 'required',
         describe: "Skip entries where the required properties are not set (e.g. '$email $first_name')."
     })
+    .options('na', {
+        alias: 'noarray',
+        describe: 'Output json as one object per row, instead of one array of objects.'
+    })
     .options('u', {
         alias: 'url',
         describe: "Only return the URL of query without making the actual request."
@@ -89,8 +93,6 @@ var properties = typeof argv.properties === "string" ? argv.properties.split(" "
 // get required mp properties
 var required = typeof argv.required === "string" ? argv.required.split(" ") : [];
 
-var page_size;
-
 // do the stuff!
 queryEngageApi({
     where: argv.query || ""
@@ -99,57 +101,78 @@ queryEngageApi({
 // ------------------------------------------
 
 function queryEngageApi(params) {
-    var url = getUrl("engage", params);
-    if (argv.url) {
-        console.log(url);
-        exit(0);
+    var page_size, total;
+
+    var doQuery = function() {
+        var url = getUrl("engage", params);
+        if (argv.url) {
+            console.log(url);
+            exit(0);
+        }
+
+        needle.get(url, {}, function(err, resp, data) {
+            // request error
+            if (err) {
+                console.log(err.toString());
+                exit(1);
+            }
+
+            // Mixpanel API error
+            if (data.error) {
+                console.log('Mixpanel API error: ' + data.error);
+                exit(1);
+            }
+
+            // return total count
+            if (argv.total) {
+                console.log(data.total);
+                exit(0);
+            }
+
+            // note: properties page_size and total are only returned if no page parameter
+            // is set in the request (not even page=0). Hence they are only available
+            // in the first response.
+
+            if (data.page == 0) {
+                // remember total results and page_size
+                total = data.total;
+                page_size = data.page_size;
+
+                // use session id from now on to speed up API response
+                params.session_id = data.session_id;
+
+                // beginning of json array
+                if (argv.format == 'json' && !argv.noarray) {
+                    console.log('[');
+                }
+            }
+
+            total -= data.results.length;
+            var isLastQuery = total < 1;
+
+            processResults(data, isLastQuery);
+
+            // if not done, keep querying for additional pages
+            if (!isLastQuery) {
+                // get next page
+                params.page = data.page++;
+
+                doQuery();
+            } else {
+                // end of json array
+                if (argv.format == 'json' && !argv.noarray) {
+                    console.log(']');
+                }
+
+                exit(0);
+            }
+        });
     }
 
-    needle.get(url, {}, function(err, resp, data) {
-        // request error
-        if (err) {
-            console.log("Error: " + err);
-            exit(1);
-        }
-
-        // Mixpanel API error
-        if (data.error) {
-            console.log('Mixpanel API error: ' + data.error);
-            exit(1);
-        }
-
-        // return total count
-        if (argv.total) {
-            console.log(data.total);
-            exit(0);
-        }
-
-        processResults(data);
-
-        // note: properties page_size and total are only returned if no page parameter
-        // is set in the request (not even page=0). Hence they are only available
-        // in the first response.
-
-        // get page_size in first response (should be 1000)
-        if (!page_size) {
-            page_size = data.page_size;
-        }
-
-        // unless fewer results than page_size, keep querying for additional pages
-        if (data.results.length >= page_size) {
-            // get next page
-            params.page = data.page++;
-            // use session id in next query to speed up API response
-            params.session_id = data.session_id;
-
-            queryEngageApi(params);
-        } else {
-            exit(0);
-        }
-    });
+    doQuery();
 }
 
-function processResults(data) {
+function processResults(data, isLastQuery) {
     var i, csv, entry, len = data.results.length, output;
 
     for (i = 0; i < len; i++) {
@@ -183,7 +206,7 @@ function processResults(data) {
             continue;
         }
 
-        if (argv.format === "csv") {
+        if (argv.format == "csv") {
             // csv
             csv = [];
             Object.keys(entry).forEach(function(k) {
@@ -193,6 +216,12 @@ function processResults(data) {
         } else {
             // json
             output = JSON.stringify(entry);
+
+            // if not last result...
+            if (!argv.noarray && (i < len - 1 || !isLastQuery)) {
+                // ...append comma
+                output += ",";
+            }
         }
 
         console.log(output);
