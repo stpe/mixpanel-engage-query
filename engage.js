@@ -7,6 +7,7 @@
 var needle      = require('needle'),
     crypto      = require('crypto'),
     fs          = require('fs'),
+    exit        = require('exit'),
 
     // mixpanel
     base_url    = "http://mixpanel.com/api/2.0/";
@@ -99,19 +100,19 @@ function queryEngageApi(params) {
         // request error
         if (err) {
             console.log("Error: " + err);
-            return;
+            exit(1);
         }
 
         // Mixpanel API error
         if (data.error) {
             console.log('Mixpanel API error: ' + data.error);
-            return;
+            exit(1);
         }
 
         // return total count
         if (argv.total) {
             console.log(data.total);
-            return;
+            exit(0);
         }
 
         processResults(data);
@@ -133,6 +134,8 @@ function queryEngageApi(params) {
             params.session_id = data.session_id;
 
             queryEngageApi(params);
+        } else {
+            exit(0);
         }
     });
 }
