@@ -63,7 +63,8 @@ var yargs = require('yargs')
     .options('h', {
         alias: 'help',
         describe: 'Help'
-    });
+    })
+    .epilogue('Note that Mixpanel API key/secret may also be set using environment variables. For more information, see https://github.com/stpe/mixpanel-engage-query');
 
 if (!process.env.MIXPANEL_API_KEY) {
     yargs.demand(['k']);
