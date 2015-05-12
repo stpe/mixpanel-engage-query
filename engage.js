@@ -122,7 +122,7 @@ queryEngageApi({
 function queryEngageApi(params) {
     var page_size, total;
 
-    var doQuery = function() {
+    var doQuery = function(params) {
         var url = getUrl("engage", params);
         if (argv.url) {
             console.log(url);
@@ -174,9 +174,9 @@ function queryEngageApi(params) {
             // if not done, keep querying for additional pages
             if (!isLastQuery) {
                 // get next page
-                params.page = data.page++;
+                params.page = data.page + 1;
 
-                doQuery();
+                doQuery(params);
             } else {
                 // end of json array
                 if (argv.format == 'json' && !argv.noarray) {
@@ -188,7 +188,7 @@ function queryEngageApi(params) {
         });
     }
 
-    doQuery();
+    doQuery(params);
 }
 
 function processResults(data, isLastQuery) {
