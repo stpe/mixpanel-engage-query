@@ -113,3 +113,15 @@ This example returns people with $last_seen timestamp greater (later) than 24th 
 
 `node engage.js -q 'properties["$last_seen"] > "2015-04-24T23:00:00"'`
 
+##### Relative date parsing
+
+Often you need a query with a condition relative to today's date. In order to avoid having to generate the command-line parameters dynamically you can use a placeholder as `[[DATE:<date string>]]` which will be replaced by a correctly formatted date for the Mixpanel API. The `<date string>` may be formatted according to what [Sugar Dates](http://sugarjs.com/dates) supports.
+
+Examples:
+`node engage.js -q 'properties["$last_seen"] > "[[DATE:yesterday]]"'`
+`node engage.js -q 'properties["$last_seen"] > "[[DATE:the beginning of last month]]"'`
+
+
+
+
+
