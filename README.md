@@ -94,7 +94,7 @@ Example output:
 ]
 ```
 
-#### Output as CVS instead of JSON
+#### Output as CSV instead of JSON
 
 `node engage.js -f csv`
 
