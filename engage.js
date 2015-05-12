@@ -12,6 +12,8 @@ var needle      = require('needle'),
     // mixpanel
     base_url    = "http://mixpanel.com/api/2.0/";
 
+require('sugar-date');
+
 // add environment variables from .env if present
 if (fs.existsSync('.env')) {
     require('dotenv').load();
@@ -92,6 +94,23 @@ var properties = typeof argv.properties === "string" ? argv.properties.split(" "
 
 // get required mp properties
 var required = typeof argv.required === "string" ? argv.required.split(" ") : [];
+
+// parse special [[DATE:<date string>]] tags
+if (typeof argv.query === "string") {
+    var matches;
+    while (matches = argv.query.match(/\[\[DATE:(.*?)\]\]/)) {
+        var tag = matches[0];
+        var date = matches[1]
+
+        try {
+            var dateISOstring = Date.create(date).format('{yyyy}-{MM}-{dd}T{hh}:{mm}:{ss}');
+            argv.query = argv.query.replace(tag, dateISOstring);
+        } catch(e) {
+            console.log("Error parsing date '" + date + "': " + e.message);
+            exit(1);
+        }
+    }
+}
 
 // do the stuff!
 queryEngageApi({
