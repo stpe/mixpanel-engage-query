@@ -4,14 +4,11 @@ This script is especially powerful in combination with [mixpanel-engage-post](ht
 
 ## Installation
 
-Clone the repository:
-`git clone https://github.com/stpe/mixpanel-engage-query.git`
-
 Install [Node.js](http://nodejs.org/).
 
-Type `npm install` in the directory. That's it!
+Type `npm install --global mixpanel-engage-query`
 
-Run using `node engage.js` or make it an executable script by doing `chmod +x engage.js`, then run it simply using `./engage.js`.
+That's it! Run it by typing `engage` in your terminal.
 
 ## Usage
 
@@ -22,32 +19,39 @@ To run the script you must specify your Mixpanel API key and secret either as pa
 #### Get help
 
 ```
-$ node engage.js
+$ engage --help
 
-Usage: engage.js -k [string] -s [string]
+Usage: engage -k [string] -s [string]
 
 Options:
   -k, --key         Mixpanel API key                                    [string]
   -s, --secret      Mixpanel API secret                                 [string]
-  -f, --format      Output format, json or csv       [string]  [default: "json"]
+  -f, --format      Output format, json or csv        [string] [default: "json"]
   -t, --total       Only return total count of results
   -q, --query       A segmentation expression (see Mixpanel API doc)    [string]
   -p, --properties  Properties to output (e.g. '$email $first_name'). Outputs
                     all properties if none specified.
-  -r, --required    Skip entries where the required properties are not set
-                    (e.g. '$email $first_name').
-  --na, --noarray   Output json as one entry per row, instead of an array of
-                    entries.
+  -r, --required    Skip entries where the required properties are not set (e.g.
+                    '$email $first_name').
+  --na, --noarray   Output json as one object per row, instead of one array of
+                    objects.
   -u, --url         Only return the URL of query without making the actual
                     request.
-  -h, --help        Help
+  -h, --help        Help                                               [boolean]
 
-Missing required arguments: k, s
+Examples:
+  engage -q 'properties["$last_seen"] >     Query using expression
+  "2015-04-24T23:00:00"'
+  engage -p '$email $first_name'            Limit output to only given list of
+                                            space delimited properties
+
+Note that Mixpanel API key/secret may also be set using environment variables.
+For more information, see https://github.com/stpe/mixpanel-engage-query
 ```
 
 #### Get everything
 
-`node engage.js`
+`$ engage`
 
 Example output:
 ```
@@ -74,7 +78,7 @@ Note that `$distinct_id` is included as a property for convenience.
 
 #### Get just the number of results
 
-`node engage.js -t` (assumes Mixpanel key/secret set as environment variables)
+`engage -t` (assumes Mixpanel key/secret set as environment variables)
 
 Example output:
 ```
@@ -83,35 +87,35 @@ Example output:
 
 #### Only output specific fields
 
-`node engage.js -p '$email $first_name'`
+`engage -p '$email $first_name'`
 
 Example output:
 ```
 [
   { '$email': 'jocke@bigcompany.se', '$first_name': 'Joakim' },
-  { '$email': 'henrik@gmail.com', '$first_name': 'Henrik' },
+  { '$email': 'henke@gmail.com', '$first_name': 'Henrik' },
   { '$email': 'theguy@gmail.com', '$first_name': 'Jonas' }
 ]
 ```
 
 #### Output as CSV instead of JSON
 
-`node engage.js -f csv`
+`engage -f csv`
 
 Example output:
 ```
 jocke@bigcompany.se;Joakim
-henrik@gmail.com;Henrik
+henke@gmail.com;Henrik
 theguy@gmail.com;Jonas
 ```
 
-Note: currently no special escaping or similar is implemented, so depending on values csv may end up invalid.
+Note: currently no special escaping or similar is implemented, so depending on values CSV may end up invalid.
 
 #### Query using expression
 
 This example returns people with $last_seen timestamp greater (later) than 24th of April (see the Mixpanel documentation for [segmentation expressions](https://mixpanel.com/docs/api-documentation/data-export-api#segmentation-expressions)).
 
-`node engage.js -q 'properties["$last_seen"] > "2015-04-24T23:00:00"'`
+`engage -q 'properties["$last_seen"] > "2015-04-24T23:00:00"'`
 
 ##### Relative date parsing
 
@@ -119,9 +123,9 @@ Often you need a query with a condition relative to today's date. In order to av
 
 Examples:
 
-`node engage.js -q 'properties["$last_seen"] > "[[DATE:yesterday]]"'`
+`engage -q 'properties["$last_seen"] > "[[DATE:yesterday]]"'`
 
-`node engage.js -q 'properties["$last_seen"] > "[[DATE:the beginning of last month]]"'`
+`engage -q 'properties["$last_seen"] > "[[DATE:the beginning of last month]]"'`
 
 
 

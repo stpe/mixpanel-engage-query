@@ -1,8 +1,16 @@
 {
   "name": "mixpanel-engage-query",
-  "description": "",
-  "version": "0.0.1",
-  "private": true,
+  "description": "Command-line tool to query People Data using Mixpanel Engage API.",
+  "version": "0.2.0",
+  "homepage": "https://github.com/stpe/mixpanel-engage-query",
+  "author": "Stefan Pettersson",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stpe/mixpanel-engage-query.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stpe/mixpanel-engage-query/issues"
+  },
   "scripts": {
     "start": "node engage.js"
   },
@@ -14,5 +22,10 @@
     "needle": "0.11.0",
     "sugar-date": "1.5.1",
     "yargs": "3.30.0"
+  },
+  "license": "ISC",
+  "preferGlobal": true,
+  "bin": {
+    "engage": "engage.js"
   }
 }
