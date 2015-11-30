@@ -1,6 +1,6 @@
 #!/usr/bin/env node --harmony
 
-/*jshint node: true */
+/* jshint node: true */
 
 "use strict";
 
@@ -10,7 +10,7 @@ var needle      = require('needle'),
     exit        = require('exit'),
 
     // mixpanel
-    base_url    = "http://mixpanel.com/api/2.0/";
+var base_url    = "http://mixpanel.com/api/2.0/";
 
 require('sugar-date');
 
@@ -100,7 +100,7 @@ if (typeof argv.query === "string") {
     var matches;
     while (matches = argv.query.match(/\[\[DATE:(.*?)\]\]/)) {
         var tag = matches[0];
-        var date = matches[1]
+        var date = matches[1];
 
         try {
             var dateISOstring = Date.create(date).format('{yyyy}-{MM}-{dd}T{hh}:{mm}:{ss}');
@@ -186,7 +186,7 @@ function queryEngageApi(params) {
                 exit(0);
             }
         });
-    }
+    };
 
     doQuery(params);
 }
