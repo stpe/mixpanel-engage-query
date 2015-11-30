@@ -20,6 +20,7 @@
     "dotenv": "1.2.0",
     "exit": "0.1.2",
     "needle": "0.11.0",
+    "os-homedir": "1.0.1",
     "sugar-date": "1.5.1",
     "yargs": "3.30.0"
   },

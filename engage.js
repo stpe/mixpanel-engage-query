@@ -8,16 +8,18 @@ var needle      = require('needle'),
     crypto      = require('crypto'),
     fs          = require('fs'),
     exit        = require('exit'),
+    dotenv      = require("dotenv"),
+    osHomedir   = require('os-homedir'); // consider replacing with os.homedir() later
 
     // mixpanel
 var base_url    = "http://mixpanel.com/api/2.0/";
 
 require('sugar-date');
 
-// add environment variables from .env if present
-if (fs.existsSync('.env')) {
-    require('dotenv').load();
-}
+// add environment variables from .env if present, check (in prio order)
+//  - .env in script directory
+//  - .engagerc in home directory
+dotenv.load({ silent: true }) || dotenv.load({ silent: true, path: osHomedir() + '/.engagerc' });
 
 // options
 var yargs = require('yargs')
