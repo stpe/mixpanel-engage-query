@@ -10,7 +10,7 @@ Type `npm install --global mixpanel-engage-query`
 
 That's it! Run it by typing `engage` in your terminal.
 
-## Usage
+## Setup
 
 To run the script you must specify your Mixpanel API key and secret either as parameters, as environment variables `MIXPANEL_API_KEY` and `MIXPANEL_API_SECRET`, in a [.env](https://github.com/motdotla/dotenv) file located in the script's directory (typically useful if you check out the source from Github) or in a `.engagerc` file in your home directory.
 
@@ -20,7 +20,7 @@ MIXPANEL_API_KEY=f49785f7a0yourkey2019c6ba15d71f5
 MIXPANEL_API_SECRET=a69ca325ayoursecret4f5ed45cafb66
 ```
 
-## Example
+## Example Usage
 
 #### Get help
 
