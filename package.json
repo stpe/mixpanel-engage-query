@@ -1,7 +1,7 @@
 {
   "name": "mixpanel-engage-query",
   "description": "Command-line tool to query People Data using Mixpanel Engage API.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/stpe/mixpanel-engage-query",
   "author": "Stefan Pettersson",
   "repository": {
