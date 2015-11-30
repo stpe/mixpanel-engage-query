@@ -6,12 +6,11 @@
 
 var needle      = require('needle'),
     crypto      = require('crypto'),
-    fs          = require('fs'),
     exit        = require('exit'),
     dotenv      = require("dotenv"),
     osHomedir   = require('os-homedir'); // consider replacing with os.homedir() later
 
-    // mixpanel
+// mixpanel
 var base_url    = "http://mixpanel.com/api/2.0/";
 
 require('sugar-date');
