@@ -23,7 +23,7 @@
     "sugar-date": "1.5.1",
     "yargs": "3.30.0"
   },
-  "license": "ISC",
+  "license": "MIT",
   "preferGlobal": true,
   "bin": {
     "engage": "engage.js"
