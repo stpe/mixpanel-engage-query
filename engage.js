@@ -91,10 +91,10 @@ var MIXPANEL_API_KEY = process.env.MIXPANEL_API_KEY || argv.key;
 var MIXPANEL_API_SECRET = process.env.MIXPANEL_API_SECRET || argv.secret;
 
 // get mp properties to output
-var properties = typeof argv.properties === "string" ? argv.properties.split(" ") : [];
+var properties = typeof argv.properties === "string" ? argv.properties.split(",") : [];
 
 // get required mp properties
-var required = typeof argv.required === "string" ? argv.required.split(" ") : [];
+var required = typeof argv.required === "string" ? argv.required.split(",") : [];
 
 // parse special [[DATE:<date string>]] tags
 if (typeof argv.query === "string") {
