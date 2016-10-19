@@ -55,7 +55,7 @@ var yargs = require('yargs')
     .example("$0 -q 'properties[\"$last_seen\"] > \"2015-04-24T23:00:00\"'", 'Query using expression')
     .options('p', {
         alias: 'properties',
-        describe: "Properties to output (e.g. '$email $first_name'). Outputs all properties if none specified."
+        describe: "Properties to output (e.g. '$email,$first_name'). Outputs all properties if none specified."
     })
     .example("$0 -p '$email $first_name'", 'Limit output to only given list of space delimited properties')
     .options('r', {
