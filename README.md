@@ -35,7 +35,7 @@ Options:
   -f, --format      Output format, json or csv        [string] [default: "json"]
   -t, --total       Only return total count of results
   -q, --query       A segmentation expression (see Mixpanel API doc)    [string]
-  -p, --properties  Properties to output (e.g. '$email $first_name'). Outputs
+  -p, --properties  Properties to output (e.g. '$email,$first_name'). Outputs
                     all properties if none specified.
   -r, --required    Skip entries where the required properties are not set (e.g.
                     '$email $first_name').
@@ -48,8 +48,8 @@ Options:
 Examples:
   engage -q 'properties["$last_seen"] >     Query using expression
   "2015-04-24T23:00:00"'
-  engage -p '$email $first_name'            Limit output to only given list of
-                                            space delimited properties
+  engage -p '$email,$first_name'            Limit output to only given list of
+                                            comma delimited properties
 
 Note that Mixpanel API key/secret may also be set using environment variables.
 For more information, see https://github.com/stpe/mixpanel-engage-query
@@ -93,7 +93,7 @@ Example output:
 
 #### Only output specific fields
 
-`engage -p '$email $first_name'`
+`engage -p '$email,$first_name'`
 
 Example output:
 ```
